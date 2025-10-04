@@ -21,14 +21,15 @@ func main() {
 	}
 
 	// Migrar tabla Note automáticamente
-	err = database.AutoMigrate(&models.Note{})
+	err = database.AutoMigrate(&models.Note{}, &models.Category{})
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("Database migrated!")
 
-	// Crear controlador
+	// Crear controladores
 	noteController := controllers.NewNoteController(database)
+	categoryController := controllers.NewCategoryController(database)
 
 	// Endpoint de prueba /health
 	r.GET("/health", func(c *gin.Context) {
@@ -36,25 +37,43 @@ func main() {
 			"status": "ok",
 		})
 	})
+	//////////////////ENDPOINTS NOTAS///////////////////
 
-	// Endpoint para crear nota
+	// Crear nota
 	r.POST("/notes", noteController.CreateNote)
 
-	// Endpoint para listar notas activas
+	// Listar notas activas
 	r.GET("/notes", noteController.ListActiveNotes)
 
-	//Endpoint para listar notas archivadas
+	// Listar notas archivadas
 	r.GET("/notes/archived", noteController.ListArchivedNotes)
 
-	//Endpoint para actualizar nota existente
+	// Actualizar nota existente
 	r.PUT("/notes/:id", noteController.UpdateNote)
 
-	//Endpoint para borrar nota
+	// Borrar nota
 	r.DELETE("/notes/:id", noteController.DeleteNote)
 
-	//Endpoint para archivar nota
+	// Archivar nota
 	r.PATCH("/notes/:id/archive", noteController.ToggleArchiveNote)
 
-	// Levantamos el servidor en el puerto 8080
+	// Asignar categoria
+	r.PUT("/notes/:id/category/:categoryId", noteController.AssignCategory)
+
+	// Desasignar categoria
+	r.DELETE("/notes/:id/category", noteController.RemoveCategory)
+
+	//////////////////ENDPOINTS CATEGORIAS///////////////////
+
+	// Crear categoria
+	r.POST("/categories", categoryController.CreateCategory)
+
+	// Listar categorias
+	r.GET("/categories", categoryController.ListCategories)
+
+	//Listar notas por categoria
+	r.GET("/categories/:id/notes", categoryController.ListNotesByCategory)
+
+	// Levantar servidor en el puerto 8080
 	r.Run(":8080")
 }

@@ -2,15 +2,12 @@ package models
 
 import "time"
 
-type Note struct {
+type Category struct {
 	ID        uint `gorm:"primaryKey"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt *time.Time `gorm:"index"`
 
-	Title      string
-	Content    string
-	Archived   bool
-	CategoryID *uint     // FK
-	Category   *Category // Relación
+	Name  string `gorm:"unique;not null"`
+	Notes []Note `gorm:"foreignKey:CategoryID"`
 }
