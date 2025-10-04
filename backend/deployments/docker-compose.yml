@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: notes_db
+    environment:
+      POSTGRES_USER: notesuser
+      POSTGRES_PASSWORD: notespass
+      POSTGRES_DB: notesdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - notes_data:/var/lib/postgresql/data
+
+volumes:
+  notes_data:
