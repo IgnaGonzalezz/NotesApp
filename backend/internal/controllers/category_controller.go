@@ -2,40 +2,45 @@ package controllers
 
 import (
 	"net/http"
-	"notesapp/pkg/models"
+	"notesapp/internal/services"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 type CategoryController struct {
-	DB *gorm.DB
+	service *services.CategoryService
 }
 
-func NewCategoryController(db *gorm.DB) *CategoryController {
-	return &CategoryController{DB: db}
+func NewCategoryController(service *services.CategoryService) *CategoryController {
+	return &CategoryController{service: service}
+}
+
+type CreateCategoryRequest struct {
+	Name string `json:"name" binding:"required"`
 }
 
 // Crear categoría
 func (c *CategoryController) CreateCategory(ctx *gin.Context) {
-	var category models.Category
-	if err := ctx.ShouldBindJSON(&category); err != nil {
+	var req CreateCategoryRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err := c.DB.Create(&category).Error; err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	category, err := c.service.CreateCategory(req.Name)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create category"})
 		return
 	}
-	ctx.JSON(http.StatusOK, category)
+	ctx.JSON(http.StatusCreated, category)
 }
 
 // Listar categorías
 func (c *CategoryController) ListCategories(ctx *gin.Context) {
-	var categories []models.Category
-	if err := c.DB.Find(&categories).Error; err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	categories, err := c.service.ListCategories()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to list categories"})
 		return
 	}
 	ctx.JSON(http.StatusOK, categories)
@@ -43,13 +48,35 @@ func (c *CategoryController) ListCategories(ctx *gin.Context) {
 
 // Listar notas de una categoría
 func (c *CategoryController) ListNotesByCategory(ctx *gin.Context) {
-	categoryID := ctx.Param("id")
+	idStr := ctx.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 32)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid category ID"})
+		return
+	}
 
-	var notes []models.Note
-	if err := c.DB.Preload("Category").Where("category_id = ? AND archived = ?", categoryID, false).Find(&notes).Error; err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	notes, err := c.service.ListNotesByCategory(uint(id))
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Category not found or failed to fetch notes"})
 		return
 	}
 
 	ctx.JSON(http.StatusOK, notes)
+}
+
+// Eliminar categoría
+func (c *CategoryController) DeleteCategory(ctx *gin.Context) {
+	idStr := ctx.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 32)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid category ID"})
+		return
+	}
+
+	if err := c.service.DeleteCategory(uint(id)); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.Status(http.StatusNoContent)
 }

@@ -11,6 +11,5 @@ type Note struct {
 	Title      string
 	Content    string
 	Archived   bool
-	CategoryID *uint     // FK
-	Category   *Category // Relación
+	Categories []Category `gorm:"many2many:note_categories;"`
 }

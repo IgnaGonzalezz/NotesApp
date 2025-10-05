@@ -9,5 +9,5 @@ type Category struct {
 	DeletedAt *time.Time `gorm:"index"`
 
 	Name  string `gorm:"unique;not null"`
-	Notes []Note `gorm:"foreignKey:CategoryID"`
+	Notes []Note `gorm:"many2many:note_categories;"`
 }

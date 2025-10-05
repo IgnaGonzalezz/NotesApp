@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"notesapp/internal/controllers"
 	"notesapp/internal/db"
+	"notesapp/internal/repositories"
+	"notesapp/internal/services"
 	"notesapp/pkg/models"
 
 	"github.com/gin-gonic/gin"
@@ -20,16 +22,24 @@ func main() {
 		panic(err)
 	}
 
-	// Migrar tabla Note automáticamente
+	// Migrar tablas automáticamente
 	err = database.AutoMigrate(&models.Note{}, &models.Category{})
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("Database migrated!")
 
-	// Crear controladores
-	noteController := controllers.NewNoteController(database)
-	categoryController := controllers.NewCategoryController(database)
+	// --- Inicialización de Repositorios ---
+	categoryRepo := repositories.NewCategoryRepository(database)
+	noteRepo := repositories.NewNoteRepository(database)
+
+	// --- Inicialización de Servicios ---
+	categoryService := services.NewCategoryService(categoryRepo)
+	noteService := services.NewNoteService(noteRepo, categoryRepo)
+
+	// --- Inicialización de Controladores ---
+	categoryController := controllers.NewCategoryController(categoryService)
+	noteController := controllers.NewNoteController(noteService)
 
 	// Endpoint de prueba /health
 	r.GET("/health", func(c *gin.Context) {
@@ -37,7 +47,8 @@ func main() {
 			"status": "ok",
 		})
 	})
-	//////////////////ENDPOINTS NOTAS///////////////////
+
+	//////////////////ENDPOINTS NOTAS (Refactorizados) ///////////////////
 
 	// Crear nota
 	r.POST("/notes", noteController.CreateNote)
@@ -54,16 +65,16 @@ func main() {
 	// Borrar nota
 	r.DELETE("/notes/:id", noteController.DeleteNote)
 
-	// Archivar nota
+	// Archivar/desarchivar nota
 	r.PATCH("/notes/:id/archive", noteController.ToggleArchiveNote)
 
 	// Asignar categoria
-	r.PUT("/notes/:id/category/:categoryId", noteController.AssignCategory)
+	r.PUT("/notes/:id/category/:categoryId", noteController.AddCategoryToNote)
 
 	// Desasignar categoria
-	r.DELETE("/notes/:id/category", noteController.RemoveCategory)
+	r.DELETE("/notes/:id/category/:categoryId", noteController.RemoveCategoryFromNote)
 
-	//////////////////ENDPOINTS CATEGORIAS///////////////////
+	//////////////////ENDPOINTS CATEGORIAS (Refactorizados) ///////////////////
 
 	// Crear categoria
 	r.POST("/categories", categoryController.CreateCategory)
@@ -71,8 +82,11 @@ func main() {
 	// Listar categorias
 	r.GET("/categories", categoryController.ListCategories)
 
-	//Listar notas por categoria
+	// Listar notas por categoria
 	r.GET("/categories/:id/notes", categoryController.ListNotesByCategory)
+
+	// Eliminar categoria
+	r.DELETE("/categories/:id", categoryController.DeleteCategory)
 
 	// Levantar servidor en el puerto 8080
 	r.Run(":8080")
