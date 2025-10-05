@@ -28,10 +28,10 @@ func (s *CategoryService) ListNotesByCategory(id uint) ([]models.Note, error) {
 }
 
 func (s *CategoryService) DeleteCategory(id uint) error {
-	// First, find the category
+	// Primero encontrar la categoria
 	category, err := s.repo.FindByID(id)
 	if err != nil {
-		return err // Category not found
+		return err // Categoria no encontrada
 	}
 
 	// Eliminar explícitamente todas las asosiaciones en la tabla intermedia

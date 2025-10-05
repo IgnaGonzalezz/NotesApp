@@ -35,18 +35,18 @@ func (r *NoteRepository) Update(note *models.Note) error {
 }
 
 func (r *NoteRepository) Delete(id uint) error {
-	// Find the note first to clear associations
+	// Primero encontrar la nota para eliminar las relaciones
 	var note models.Note
 	if err := r.DB.First(&note, id).Error; err != nil {
-		return err // Note not found or other error
+		return err // No se encontro la nota u otro error
 	}
 
-	// Clear many-to-many associations with categories
+	// Limpiar relaciones many-to-many con categorias
 	if err := r.DB.Model(&note).Association("Categories").Clear(); err != nil {
-		return err // Error clearing associations
+		return err // Error limpiando relaciones
 	}
 
-	// Now delete the note itself
+	// Ahora borrar la nota
 	return r.DB.Delete(&models.Note{}, id).Error
 }
 

@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo "Building and starting the application using Docker Compose..."
+echo "Building and starting the application..."
 gnome-terminal -- bash -c "cd backend/deployments && ./run_docker.sh; exec bash"
 
-echo "Esperando 30 segundos a que el backend esté listo..."
-sleep 30
+echo "Please wait 20 secs till the backend is ready..."
+sleep 20
 
 gnome-terminal -- bash -c "cd frontend && npm start; exec bash"
 

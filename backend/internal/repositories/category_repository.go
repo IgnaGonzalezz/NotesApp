@@ -26,7 +26,7 @@ func (r *CategoryRepository) FindAll() ([]models.Category, error) {
 
 func (r *CategoryRepository) FindByID(id uint) (*models.Category, error) {
 	var category models.Category
-	err := r.DB.Preload("Notes").First(&category, id).Error // Added .Preload("Notes")
+	err := r.DB.Preload("Notes").First(&category, id).Error
 	return &category, err
 }
 

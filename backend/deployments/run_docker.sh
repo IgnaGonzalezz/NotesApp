@@ -11,7 +11,7 @@ docker network create notes-network &> /dev/null
 DB_USER="notesuser"
 DB_PASSWORD="notespass"
 DB_NAME="notesdb"
-DB_HOST="notes_db" # Importante: el nombre del host es el nombre del contenedor de la DB
+DB_HOST="notes_db" 
 DB_PORT="5432"
 
 # 1. Iniciar la base de datos
@@ -46,4 +46,3 @@ docker run -d \
     -e DB_PORT=${DB_PORT} \
     notes-app-image
 
-echo "\nEntorno listo. La aplicación debería estar disponible en http://localhost:8080"

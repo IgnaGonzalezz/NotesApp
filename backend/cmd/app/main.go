@@ -9,12 +9,12 @@ import (
 	"notesapp/internal/services"
 	"notesapp/pkg/models"
 
-	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	// Creamos el router de Gin
+	// Creacion del router de Gin
 	r := gin.Default()
 
 	// Configuración de CORS
@@ -24,10 +24,7 @@ func main() {
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
-		// AllowOriginFunc:  func(origin string) bool {
-		// 	return origin == "http://localhost:3000"
-		// },
-		MaxAge: 12 * 3600,
+		MaxAge:           12 * 3600,
 	}))
 
 	// Conectar a la DB
@@ -62,7 +59,7 @@ func main() {
 		})
 	})
 
-	//////////////////ENDPOINTS NOTAS (Refactorizados) ///////////////////
+	//////////////////ENDPOINTS NOTAS///////////////////
 
 	// Crear nota
 	r.POST("/notes", noteController.CreateNote)
@@ -88,7 +85,7 @@ func main() {
 	// Desasignar categoria
 	r.DELETE("/notes/:id/category/:categoryId", noteController.RemoveCategoryFromNote)
 
-	//////////////////ENDPOINTS CATEGORIAS (Refactorizados) ///////////////////
+	//////////////////ENDPOINTS CATEGORIAS///////////////////
 
 	// Crear categoria
 	r.POST("/categories", categoryController.CreateCategory)
