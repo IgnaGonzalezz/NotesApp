@@ -8,7 +8,7 @@ function NoteCategoryModal({ show, handleClose, note, allCategories, onCategoryC
   useEffect(() => {
     if (note && allCategories) {
       const initialSelected = {};
-      if (note.Categories) { // Add null check here
+      if (note.Categories) { 
         note.Categories.forEach(cat => {
           initialSelected[cat.ID] = true;
         });
@@ -26,7 +26,7 @@ function NoteCategoryModal({ show, handleClose, note, allCategories, onCategoryC
   };
 
   const handleSubmit = () => {
-    // Call the parent's onCategoryChange with the updated categories
+    // Llamar onCategoryChange con las categorias actualizadas
     onCategoryChange(note.ID, selectedCategories);
     handleClose();
   };

@@ -24,8 +24,8 @@ function CategoryManager({ onCategoriesUpdated }) {
   const fetchCategories = async () => {
     try {
       const response = await getCategories();
-      setCategories(response.data); // Guardamos los datos de la respuesta en el estado.
-      setError(''); // Limpiamos cualquier error anterior.
+      setCategories(response.data); // Guardar los datos de la respuesta en el estado.
+      setError(''); // Limpiar cualquier error anterior.
     } catch (err) {
       setError('Error loading categories.');
     }
@@ -33,15 +33,15 @@ function CategoryManager({ onCategoriesUpdated }) {
 
   // Función que se ejecuta cuando el usuario envía el formulario para crear una categoría.
   const handleCreateCategory = async (e) => {
-    e.preventDefault(); // Prevenimos que la página se recargue.
+    e.preventDefault(); // Prevenir que la página se recargue.
     if (!newCategoryName.trim()) return; // No hacer nada si el nombre está vacío.
 
     try {
       await createCategory(newCategoryName);
-      setNewCategoryName(''); // Limpiamos el input.
-      fetchCategories(); // Volvemos a cargar la lista para que se vea la nueva categoría.
+      setNewCategoryName(''); // Limpiar el input.
+      fetchCategories(); // Volver a cargar la lista para que se vea la nueva categoría.
       if (onCategoriesUpdated) {
-        onCategoriesUpdated(); // Notify parent to refresh global categories
+        onCategoriesUpdated(); // Notificar para actualizar categorias globales
       }
     } catch (err) {
       setError('Error creating category.');
@@ -52,10 +52,10 @@ function CategoryManager({ onCategoriesUpdated }) {
   const handleDeleteCategory = async (id) => {
     try {
       await deleteCategory(id);
-      fetchCategories(); // Recargamos la lista para que desaparezca la categoría eliminada.
-      setError(''); // Limpiamos cualquier error anterior.
+      fetchCategories(); // Recargar la lista para que desaparezca la categoría eliminada.
+      setError(''); // Limpiar cualquier error anterior.
       if (onCategoriesUpdated) {
-        onCategoriesUpdated(); // Notify parent to refresh global categories
+        onCategoriesUpdated(); // Notificar para actualizar categorias globales
       }
     } catch (err) {
       console.error("Error deleting category:", err);
@@ -68,7 +68,7 @@ function CategoryManager({ onCategoriesUpdated }) {
   };
 
   // --- RENDERIZADO ---
-  // Esto es lo que el componente dibuja en la pantalla.
+
   return (
     <Container className="mt-4">
       <Row>

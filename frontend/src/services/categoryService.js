@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-// Definimos la URL base de nuestra API. 
-// En un proyecto real, esto estaría en un archivo de configuración (.env).
 const API_URL = 'http://localhost:8080';
 
 /**

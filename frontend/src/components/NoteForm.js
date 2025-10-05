@@ -14,7 +14,7 @@ function NoteForm({ show, handleClose, handleSubmit, initialNote }) {
       setTitle('');
       setContent('');
     }
-    setError(''); // Clear error on modal open/note change
+    setError(''); 
   }, [initialNote, show]);
 
   const onSubmit = (e) => {

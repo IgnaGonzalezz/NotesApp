@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8080/notes'; // Asegúrate de que esta URL coincida con tu backend
+const API_BASE_URL = 'http://localhost:8080/notes'; 
 
 const handleResponse = async (response) => {
   console.log("Response status:", response.status);
@@ -14,9 +14,9 @@ const handleResponse = async (response) => {
     throw new Error(errorData.error || 'Something went wrong');
   }
 
-  // If response is OK but no content or not JSON, return null or an empty object
+
   if (response.status === 204 || !contentType || !contentType.includes("application/json")) {
-    return null; // Or return {}; depending on what the caller expects for no content
+    return null; 
   }
 
   return response.json();
@@ -68,7 +68,7 @@ export const deleteNote = async (id) => {
 };
 
 export const toggleArchiveNote = async (id) => {
-  // El backend usa PATCH /notes/:id/archive
+ 
   const response = await fetch(`${API_BASE_URL}/${id}/archive`, {
     method: 'PATCH',
   });
@@ -76,7 +76,7 @@ export const toggleArchiveNote = async (id) => {
 };
 
 export const addCategoryToNote = async (noteId, categoryId) => {
-  // El backend usa PUT /notes/:id/category/:categoryId
+  
   const response = await fetch(`${API_BASE_URL}/${noteId}/category/${categoryId}`, {
     method: 'PUT',
   });
@@ -84,7 +84,7 @@ export const addCategoryToNote = async (noteId, categoryId) => {
 };
 
 export const removeCategoryFromNote = async (noteId, categoryId) => {
-  // El backend usa DELETE /notes/:id/category/:categoryId
+  
   const response = await fetch(`${API_BASE_URL}/${noteId}/category/${categoryId}`, {
     method: 'DELETE',
   });

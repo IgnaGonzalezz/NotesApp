@@ -3,8 +3,10 @@
 echo "Building and starting the application..."
 gnome-terminal -- bash -c "cd backend/deployments && ./run_docker.sh; exec bash"
 
-echo "Please wait 20 secs till the backend is ready..."
-sleep 20
+echo "Please wait a minute until the backend is ready..."
+while ! nc -z localhost 8080; do
+  sleep 1
+done
 
 gnome-terminal -- bash -c "cd frontend && npm start; exec bash"
 

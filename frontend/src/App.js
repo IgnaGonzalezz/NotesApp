@@ -130,7 +130,7 @@ function App() {
       console.log("Current Category IDs:", Array.from(currentCategoryIds));
       console.log("New Selected Category IDs:", Array.from(newCategoryIds));
 
-      // Categories to add
+      // Categorias para aniadir
       for (const categoryId of newCategoryIds) {
         if (!currentCategoryIds.has(categoryId)) {
           console.log("Adding category", categoryId, "to note", noteId);
@@ -138,7 +138,7 @@ function App() {
         }
       }
 
-      // Categories to remove
+      // Categories para eliminar
       for (const categoryId of currentCategoryIds) {
         if (!newCategoryIds.has(categoryId)) {
           console.log("Removing category", categoryId, "from note", noteId);
@@ -212,9 +212,7 @@ function App() {
             </Col>
           ))}
         </Row>
-
-        {/* For now, we keep CategoryManager here. We will integrate it better later. */}
-        <CategoryManager onCategoriesUpdated={fetchCategories} />
+                <CategoryManager onCategoriesUpdated={fetchCategories} />
       </Container>
 
       <NoteForm
