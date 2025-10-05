@@ -20,7 +20,7 @@ func (r *NoteRepository) Create(note *models.Note) error {
 
 func (r *NoteRepository) FindAll(archived bool) ([]models.Note, error) {
 	var notes []models.Note
-	err := r.DB.Where("archived = ?", archived).Find(&notes).Error
+	err := r.DB.Preload("Categories").Where("archived = ?", archived).Find(&notes).Error
 	return notes, err
 }
 
@@ -35,6 +35,18 @@ func (r *NoteRepository) Update(note *models.Note) error {
 }
 
 func (r *NoteRepository) Delete(id uint) error {
+	// Find the note first to clear associations
+	var note models.Note
+	if err := r.DB.First(&note, id).Error; err != nil {
+		return err // Note not found or other error
+	}
+
+	// Clear many-to-many associations with categories
+	if err := r.DB.Model(&note).Association("Categories").Clear(); err != nil {
+		return err // Error clearing associations
+	}
+
+	// Now delete the note itself
 	return r.DB.Delete(&models.Note{}, id).Error
 }
 

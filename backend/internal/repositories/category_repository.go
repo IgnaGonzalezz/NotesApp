@@ -26,7 +26,7 @@ func (r *CategoryRepository) FindAll() ([]models.Category, error) {
 
 func (r *CategoryRepository) FindByID(id uint) (*models.Category, error) {
 	var category models.Category
-	err := r.DB.First(&category, id).Error
+	err := r.DB.Preload("Notes").First(&category, id).Error // Added .Preload("Notes")
 	return &category, err
 }
 
@@ -40,9 +40,14 @@ func (r *CategoryRepository) FindNotesByCategoryID(id uint) ([]models.Note, erro
 	return notes, err
 }
 
-// ClearAssociations removes the link between a category and all its notes.
+// ClearAssociations elimina la relacion entre una categoria y sus notas
 func (r *CategoryRepository) ClearAssociations(category *models.Category) error {
 	return r.DB.Model(category).Association("Notes").Clear()
+}
+
+// DeleteNoteCategoryAssociations elimina explícitamente las entradas de la tabla intermedia
+func (r *CategoryRepository) DeleteNoteCategoryAssociations(categoryID uint) error {
+	return r.DB.Exec("DELETE FROM note_categories WHERE category_id = ?", categoryID).Error
 }
 
 func (r *CategoryRepository) Delete(category *models.Category) error {

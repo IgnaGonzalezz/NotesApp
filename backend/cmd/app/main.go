@@ -10,11 +10,25 @@ import (
 	"notesapp/pkg/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
 )
 
 func main() {
 	// Creamos el router de Gin
 	r := gin.Default()
+
+	// Configuración de CORS
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		// AllowOriginFunc:  func(origin string) bool {
+		// 	return origin == "http://localhost:3000"
+		// },
+		MaxAge: 12 * 3600,
+	}))
 
 	// Conectar a la DB
 	database, err := db.Connect()

@@ -34,11 +34,11 @@ func (s *CategoryService) DeleteCategory(id uint) error {
 		return err // Category not found
 	}
 
-	// Remove all associations from the join table
-	if err := s.repo.ClearAssociations(category); err != nil {
+	// Eliminar explícitamente todas las asosiaciones en la tabla intermedia
+	if err := s.repo.DeleteNoteCategoryAssociations(category.ID); err != nil {
 		return err
 	}
 
-	// Finally, delete the category itself
+	// Finalmente borrar la categoria
 	return s.repo.Delete(category)
 }

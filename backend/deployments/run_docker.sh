@@ -27,7 +27,7 @@ docker run -d \
 
 # 2. Construir la imagen de la aplicación
 echo "Construyendo la imagen de la aplicación..."
-docker build -t notes-app-image ../
+(cd ../ && docker build -t notes-app-image .)
 
 # Esperar un poco para que la DB esté lista
 echo "Esperando a que la base de datos se inicie..."
