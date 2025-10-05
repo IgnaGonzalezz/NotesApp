@@ -156,19 +156,19 @@ function App() {
     <div>
       <Navbar bg="dark" variant="dark" expand="lg">
         <Container>
-          <Navbar.Brand href="#home">Gestor de Notas - Ensolvers</Navbar.Brand>
+          <Navbar.Brand href="#home">Note Manager - Ensolvers</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link onClick={() => setShowArchived(false)} active={!showArchived}>Notas Activas</Nav.Link>
-              <Nav.Link onClick={() => setShowArchived(true)} active={showArchived}>Notas Archivadas</Nav.Link>
+              <Nav.Link onClick={() => setShowArchived(false)} active={!showArchived}>Active Notes</Nav.Link>
+              <Nav.Link onClick={() => setShowArchived(true)} active={showArchived}>Archived Notes</Nav.Link>
             </Nav>
             <Dropdown className="ms-auto">
               <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                {selectedCategory ? categories.find(cat => cat.ID === selectedCategory)?.Name : 'Filtrar por Categoría'}
+                {selectedCategory ? categories.find(cat => cat.ID === selectedCategory)?.Name : 'Filter by Category'}
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => handleCategoryFilter(null)}>Todas las Categorías</Dropdown.Item>
+                <Dropdown.Item onClick={() => handleCategoryFilter(null)}>All Categories</Dropdown.Item>
                 {categories.map(category => (
                   <Dropdown.Item key={category.ID} onClick={() => handleCategoryFilter(category.ID)}>
                     {category.Name}
@@ -176,16 +176,16 @@ function App() {
                 ))}
               </Dropdown.Menu>
             </Dropdown>
-            <Button variant="primary" className="ms-3" onClick={handleOpenCreateNoteModal}>Crear Nueva Nota</Button>
+            <Button variant="primary" className="ms-3" onClick={handleOpenCreateNoteModal}>Create New Note</Button>
           </Navbar.Collapse>
         </Container>
       </Navbar>
 
       <Container className="mt-4">
-        <h2 className="mb-4">{showArchived ? 'Notas Archivadas' : 'Notas Activas'}</h2>
-        {loading && <p>Cargando notas...</p>}
+        <h2 className="mb-4">{showArchived ? 'Archived Notes' : 'Active Notes'}</h2>
+        {loading && <p>Loading notes...</p>}
         {error && <p className="text-danger">Error: {error}</p>}
-        {!loading && !error && notes.length === 0 && <p>No hay notas para mostrar.</p>}
+        {!loading && !error && notes.length === 0 && <p>No notes to display.</p>}
         
         <Row xs={1} md={2} lg={3} className="g-4">
           {!loading && !error && notes.map(note => (
@@ -202,10 +202,10 @@ function App() {
                     </div>
                   )}
                   <div className="mt-3">
-                    <Button variant="info" size="sm" className="me-2" onClick={() => handleOpenEditNoteModal(note)}>Editar</Button>
-                    <Button variant="warning" size="sm" className="me-2" onClick={() => handleToggleArchiveNote(note.ID)}>{note.Archived ? 'Desarchivar' : 'Archivar'}</Button>
-                    <Button variant="danger" size="sm" className="me-2" onClick={() => handleDeleteNote(note.ID)}>Eliminar</Button>
-                    <Button variant="success" size="sm" className="me-2" onClick={() => handleOpenCategoryModal(note)}>Gestionar Categorías</Button>
+                    <Button variant="info" size="sm" className="me-2" onClick={() => handleOpenEditNoteModal(note)}>Edit</Button>
+                    <Button variant="warning" size="sm" className="me-2" onClick={() => handleToggleArchiveNote(note.ID)}>{note.Archived ? 'Unarchive' : 'Archive'}</Button>
+                    <Button variant="danger" size="sm" className="me-2" onClick={() => handleDeleteNote(note.ID)}>Delete</Button>
+                    <Button variant="success" size="sm" className="me-2" onClick={() => handleOpenCategoryModal(note)}>Manage Categories</Button>
                   </div>
                 </Card.Body>
               </Card>
@@ -213,8 +213,7 @@ function App() {
           ))}
         </Row>
 
-        {/* Por ahora, mantenemos CategoryManager aquí. Luego lo integraremos mejor. */}
-        <h3 className="mt-5">Gestión de Categorías</h3>
+        {/* For now, we keep CategoryManager here. We will integrate it better later. */}
         <CategoryManager onCategoriesUpdated={fetchCategories} />
       </Container>
 

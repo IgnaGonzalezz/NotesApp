@@ -20,7 +20,7 @@ function NoteForm({ show, handleClose, handleSubmit, initialNote }) {
   const onSubmit = (e) => {
     e.preventDefault();
     if (!title.trim()) {
-      setError('El título no puede estar vacío.');
+      setError('Title cannot be empty.');
       return;
     }
     setError('');
@@ -30,27 +30,27 @@ function NoteForm({ show, handleClose, handleSubmit, initialNote }) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>{initialNote ? 'Editar Nota' : 'Crear Nueva Nota'}</Modal.Title>
+        <Modal.Title>{initialNote ? 'Edit Note' : 'Create New Note'}</Modal.Title>
       </Modal.Header>
       <Form onSubmit={onSubmit}>
         <Modal.Body>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form.Group className="mb-3">
-            <Form.Label>Título</Form.Label>
+            <Form.Label>Title</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Título de la nota"
+              placeholder="Note title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Contenido</Form.Label>
+            <Form.Label>Content</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
-              placeholder="Contenido de la nota"
+              placeholder="Note content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
@@ -58,10 +58,10 @@ function NoteForm({ show, handleClose, handleSubmit, initialNote }) {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Cancelar
+            Cancel
           </Button>
           <Button variant="primary" type="submit">
-            {initialNote ? 'Guardar Cambios' : 'Crear Nota'}
+            {initialNote ? 'Save Changes' : 'Create Note'}
           </Button>
         </Modal.Footer>
       </Form>

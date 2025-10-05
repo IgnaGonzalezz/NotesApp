@@ -17,28 +17,31 @@ This is a full-stack web application that allows users to create, edit, delete, 
 ## Technologies Used
 
 ### Backend
-- **Language:** Go (Golang)
-- **Web Framework:** Gin Gonic
-- **ORM:** GORM
-- **Database:** PostgreSQL
+- **Language:** Go (v1.25.1)
+- **Web Framework:** Gin Gonic (v1.11.0)
+- **ORM:** GORM (v1.31.0)
+- **Database:** PostgreSQL (v15)
 - **Dependency Management:** Go Modules
 
 ### Frontend
-- **Framework:** React.js
+- **Framework:** React.js (v19.2.0)
 - **Language:** JavaScript
-- **Styling:** React-Bootstrap
-- **HTTP Client:** Axios (for categories), Fetch API (for notes)
-- **Dependency Management:** npm
+- **Styling:** React-Bootstrap (v2.10.10) & Bootstrap (v5.3.8)
+- **HTTP Client:** Axios (v1.12.2), Fetch API
+- **Package Manager:** npm
+- **Build Tool:** React Scripts (v5.0.1)
+- **Web Server:** Nginx (stable-alpine)
+- **Runtime:** Node.js (v20-alpine)
 
 ### Other
-- **Containerization:** Docker, Docker Compose
+- **Containerization:** Docker & Docker Compose (v3.8)
 
 ## Prerequisites
 
 To run this application, you need to have the following installed:
 
 - **Docker:** [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
-- **Docker Compose:** (Usually comes with Docker Desktop installation, or can be installed separately: [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/))
+- **Docker Compose:** (Usually comes with Docker Desktop, or can be installed separately: [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/))
 
 ## How to Run the Application
 
@@ -58,7 +61,7 @@ To run this application, you need to have the following installed:
     - Build the Docker images for both the backend and frontend.
     - Start the PostgreSQL database service.
     - Start the backend API service.
-    - Start the frontend development server.
+    - Start the frontend web server.
 
 3.  **Access the application:**
     - **Frontend:** Open your web browser and navigate to `http://localhost:3000`
@@ -68,7 +71,7 @@ To run this application, you need to have the following installed:
 
 - `backend/`: Contains the Go backend application.
     - `Dockerfile`: Dockerfile for the backend.
-    - `cmd/app/main.go`: Main entry point for the backend application, setting up routes, database connection, and CORS.
+    - `cmd/app/main.go`: Main entry point for the backend application.
     - `internal/controllers/`: Handlers for API requests.
     - `internal/db/`: Database connection and migration logic.
     - `internal/repositories/`: Data access layer.

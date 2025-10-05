@@ -27,7 +27,7 @@ function CategoryManager({ onCategoriesUpdated }) {
       setCategories(response.data); // Guardamos los datos de la respuesta en el estado.
       setError(''); // Limpiamos cualquier error anterior.
     } catch (err) {
-      setError('Error al cargar las categorías.');
+      setError('Error loading categories.');
     }
   };
 
@@ -44,7 +44,7 @@ function CategoryManager({ onCategoriesUpdated }) {
         onCategoriesUpdated(); // Notify parent to refresh global categories
       }
     } catch (err) {
-      setError('Error al crear la categoría.');
+      setError('Error creating category.');
     }
   };
 
@@ -58,11 +58,11 @@ function CategoryManager({ onCategoriesUpdated }) {
         onCategoriesUpdated(); // Notify parent to refresh global categories
       }
     } catch (err) {
-      console.error("Error al eliminar categoría:", err);
+      console.error("Error deleting category:", err);
       // Intentar extraer un mensaje de error más específico del backend
       const errorMessage = err.response && err.response.data && err.response.data.error 
                            ? err.response.data.error 
-                           : 'Error al eliminar la categoría. Asegúrate de que no esté asignada a ninguna nota.';
+                           : 'Error deleting category. Make sure it is not assigned to any note.';
       setError(errorMessage);
     }
   };
@@ -73,7 +73,7 @@ function CategoryManager({ onCategoriesUpdated }) {
     <Container className="mt-4">
       <Row>
         <Col md={{ span: 6, offset: 3 }}>
-          <h2>Gestor de Categorías</h2>
+          <h2>Category Manager</h2>
           
           {/* Formulario para crear una nueva categoría */}
           <Form onSubmit={handleCreateCategory} className="mb-3">
@@ -83,11 +83,11 @@ function CategoryManager({ onCategoriesUpdated }) {
                   type="text"
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
-                  placeholder="Nombre de la nueva categoría"
+                  placeholder="New category name"
                 />
               </Col>
               <Col xs="auto">
-                <Button type="submit">Crear</Button>
+                <Button type="submit">Create</Button>
               </Col>
             </Row>
           </Form>
@@ -101,7 +101,7 @@ function CategoryManager({ onCategoriesUpdated }) {
               <ListGroup.Item key={category.ID} className="d-flex justify-content-between align-items-center">
                 {category.Name}
                 <Button variant="danger" size="sm" onClick={() => handleDeleteCategory(category.ID)}>
-                  Eliminar
+                  Delete
                 </Button>
               </ListGroup.Item>
             ))}
