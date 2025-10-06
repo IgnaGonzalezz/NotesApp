@@ -1,13 +1,11 @@
 #!/bin/bash
 
 echo "Building and starting the application..."
-gnome-terminal -- bash -c "cd backend/deployments && ./run_docker.sh; exec bash"
+(cd backend/deployments && ./run_docker.sh) &
 
-echo "Please wait a minute until the backend is ready..."
-while ! nc -z localhost 8080; do
-  sleep 1
-done
+echo "Please wait until the backend is ready..."
+sleep 60
 
-gnome-terminal -- bash -c "cd frontend && npm start; exec bash"
+(cd frontend && npm start) &
 
 echo "Application started. Frontend: http://localhost:3000, Backend: http://localhost:8080"

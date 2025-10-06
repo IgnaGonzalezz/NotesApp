@@ -101,7 +101,7 @@ function App() {
 
   const handleDeleteNote = async (id) => {
     console.log("Attempting to delete note with ID:", id);
-    if (window.confirm("¿Estás seguro de que quieres eliminar esta nota?")) {
+    if (window.confirm("Are you sure you want to delete this note?")) {
       try {
         await noteService.deleteNote(id);
         fetchNotes(); // Refresh notes after deletion
